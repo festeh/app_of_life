@@ -1,12 +1,16 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	export let data;
+
+	onMount(() => {
+		if (!data.loggedIn) {
+			goto('/login');
+		}
+	});
 </script>
 
 {#if data.loggedIn}
-	<h1>Admin</h1>
-{:else}
-	<h1>Guest</h1>
+	<h1>Admin!</h1>
+	{JSON.stringify(data)}
 {/if}
-
-{ JSON.stringify(data) }
-

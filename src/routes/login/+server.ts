@@ -1,8 +1,8 @@
-import bcrypt from 'bcryptjs';
 
 export async function POST({ request }) {
   const { email, password } = await request.json();
-  if (email === process.env.EMAIL) {
+  console.log('email', email, import.meta.env);
+  if (email === import.meta.env.VITE_EMAIL && password === import.meta.env.VITE_PASSWORD) {
     const maxAge = 60 * 60 * 24 * 365; // 1 year
     return new Response(null, {
       status: 200,
