@@ -1,9 +1,10 @@
 <script lang="ts">
+	import Weather from '../components/weather.svelte';
+
 	export let data;
-  console.log(data);
+	console.log(data);
 </script>
 
 {#if data.loggedIn}
-	<h1>Admin!</h1>
-	{JSON.stringify(data)}
+	<Weather />
 {/if}
