@@ -1,6 +1,5 @@
 export async function POST({ request }) {
   const { email, password } = await request.json();
-  console.log('email', email, import.meta.env);
 
   if (!import.meta.env.VITE_EMAIL || !import.meta.env.VITE_PASSWORD) {
     return new Response('Environment variables not set', { status: 500 });
