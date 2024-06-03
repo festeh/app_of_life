@@ -37,6 +37,13 @@ function getWeatherDescription(weatherCode: number): string {
   return weatherDescriptions[weatherCode] || 'Неразбериха';
 }
 
+const mockData = [
+  {time: 1630000800, temperature: 20, description: 'Ясненько', humidity: 50},
+  {time: 1630004400, temperature: 21, description: 'Cloudy', humidity: 55},
+  {time: 1630008000, temperature: 22, description: 'Mostly Clear', humidity: 60},
+  {time: 1630011600, temperature: 23, description: 'Partly Cloudy', humidity: 65},
+]
+
 export async function GET() {
   const apiUrl = `https://api.tomorrow.io/v4/timelines`
     + `?location=${latitude},${longitude}`
@@ -44,19 +51,18 @@ export async function GET() {
     + `&apikey=${apiKey}`;
   try {
     const response = await fetch(apiUrl);
-    if (!response.ok) {
-      if (response.status === 429001) {
-        return new Response('Rate limit exceeded', { status: 429 });
-      }
-    }
     const data = await response.json();
+    if (data.code === 429001) {
+      return new Response(JSON.stringify(mockData), { status: 200 });
+    }
     console.log(data);
     const hourlyData = data.timelines.hourly.map(info => {
+      const time = info.time;
       const temperature = info.values.temperature;
       const humidity = info.values.humidity;
       const weatherCode = info.values.weatherCode;
       const description = getWeatherDescription(weatherCode);
-      return { temperature, description: description, humidity };
+      return { time, temperature, description: description, humidity };
     })
     return new Response(JSON.stringify(hourlyData), {
       status: 200,
