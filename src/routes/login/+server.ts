@@ -1,7 +1,11 @@
-
 export async function POST({ request }) {
   const { email, password } = await request.json();
   console.log('email', email, import.meta.env);
+
+  if (!import.meta.env.VITE_EMAIL || !import.meta.env.VITE_PASSWORD) {
+    return new Response('Environment variables not set', { status: 500 });
+  }
+
   if (email === import.meta.env.VITE_EMAIL && password === import.meta.env.VITE_PASSWORD) {
     const maxAge = 60 * 60 * 24 * 365; // 1 year
     return new Response(null, {

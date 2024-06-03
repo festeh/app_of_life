@@ -1,13 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 	export let data;
-
-	onMount(() => {
-		if (!data.loggedIn) {
-			goto('/login');
-		}
-	});
+  console.log(data);
 </script>
 
 {#if data.loggedIn}
