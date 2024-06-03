@@ -7,10 +7,10 @@ function getWeatherDescription(weatherCode: number): string {
   const weatherDescriptions = {
     0: 'Unknown',
     1000: 'Ясненько',
-    1001: 'Cloudy',
-    1100: 'Mostly Clear',
-    1101: 'Partly Cloudy',
-    1102: 'Mostly Cloudy',
+    1001: 'Облачкааа',
+    1100: 'Ясненько (ну почти)',
+    1101: 'Янооблачка',
+    1102: 'Облачка (в основном)',
     2000: 'Сайлент Хилл',
     2100: 'Light Fog',
     3000: 'Light Wind',
@@ -45,7 +45,7 @@ const mockData = [
 ]
 
 export async function GET() {
-  const apiUrl = `https://api.tomorrow.io/v4/timelines`
+  const apiUrl = `https://api.tomorrow.io/v4/weather/forecast`
     + `?location=${latitude},${longitude}`
     + `&units=metric`
     + `&apikey=${apiKey}`;
@@ -53,6 +53,7 @@ export async function GET() {
     const response = await fetch(apiUrl);
     const data = await response.json();
     if (data.code === 429001) {
+      console.error('Rate limit exceeded');
       return new Response(JSON.stringify(mockData), { status: 200 });
     }
     console.log(data);
