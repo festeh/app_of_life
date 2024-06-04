@@ -20,6 +20,7 @@ jobs:
       env:
         VITE_EMAIL: ${{ secrets.VITE_EMAIL }}       
         VITE_PASSWORD: ${{ secrets.VITE_PASSWORD }}
+        VITE_TOMORROW_API_KEY: ${{ secrets.VITE_TOMORROW_API_KEY }}
 
     - name: Copy to VPS
       uses: appleboy/scp-action@master

@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { Card } from 'svelte-ux';
 	import { ListItem } from 'svelte-ux';
+	import WeatherHour from './weather_hour.svelte';
 
 	let hourlyData = null;
 	let loading = true;
@@ -32,17 +33,8 @@
 		{:else if error}
 			<p>Error: {error}</p>
 		{:else}
-			{#each hourlyData as item}
-				<ListItem>
-					<div slot="title">
-						{item.time}
-					</div>
-					<div slot="subheading" class="flex flex-col">
-						<span> {item.temperature} °C </span>
-            <span> {item.humidity}  </span>
-						<span> {item.description}</span>
-					</div>
-				</ListItem>
+			{#each hourlyData as info}
+				<WeatherHour {info} />
 			{/each}
 		{/if}
 	</div>
