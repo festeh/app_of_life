@@ -49,6 +49,9 @@ export async function GET() {
     return new Response('API key for weather is missing', { status: 501 });
   }
   try {
+    if (import.meta.env.VITE_USE_MOCK_DATA) {
+      return new Response(JSON.stringify(mockData), { status: 200 });
+    }
     const apiUrl = `https://api.tomorrow.io/v4/weather/forecast`
       + `?location=${latitude},${longitude}`
       + `&units=metric`

@@ -26,7 +26,7 @@
 	});
 </script>
 
-<Card title="Погодка">
+<Card title="Погодка" class="border rounded-xl p-2 m-1">
 	<div slot="contents">
 		{#if loading}
 			<p>Loading weather data...</p>
@@ -41,22 +41,4 @@
 </Card>
 
 <style>
-	.weather-card {
-		/* background-color: #f4f4f4; */
-		border-radius: 8px;
-		padding: 20px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		max-width: 300px;
-		margin: 0 auto;
-	}
-
-	h2 {
-		font-size: 24px;
-		margin-bottom: 10px;
-	}
-
-	p {
-		font-size: 18px;
-		margin-bottom: 5px;
-	}
 </style>

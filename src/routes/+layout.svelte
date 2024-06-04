@@ -3,6 +3,10 @@
 
 	import { page } from '$app/stores';
 	import '../app.css';
+	import { getSettings } from 'svelte-ux';
+
+	const { currentTheme } = getSettings();
+  currentTheme.setTheme("light")
 
 	export let data;
 	settings({
@@ -43,8 +47,7 @@
 			<!-- /> -->
 		</nav>
 
-		<AppBar title="Papujki">
-		</AppBar>
+		<AppBar title="Papujki"></AppBar>
 
 		<slot />
 	</AppLayout>

@@ -9,7 +9,7 @@
 	}
 </script>
 
-<div class="bg-gray-800 text-white p-6 rounded-lg shadow-md flex">
+<div class="bg-surface-100 p-6 rounded-lg shadow-md flex">
 	<div class="flex justify-center items-center">
 		<div class="text-center">
 			<p class="text-xl font-bold mb-2">{formatTime(info.time)}</p>
