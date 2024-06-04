@@ -1,10 +1,5 @@
 <script lang="ts">
-	import Weather from '../components/weather.svelte';
-
-	export let data;
-	console.log(data);
+import Weatherwidget from '../components/weather/weatherwidget.svelte';
 </script>
 
-{#if data.loggedIn}
-	<Weather />
-{/if}
+<Weatherwidget />

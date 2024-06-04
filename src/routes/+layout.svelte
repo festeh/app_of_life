@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { AppBar, AppLayout, Card, Button, NavItem, Tooltip, settings } from 'svelte-ux';
+	import { AppBar, AppLayout, Card, Button, NavItem, Tooltip, settings, Icon } from 'svelte-ux';
 
 	import { page } from '$app/stores';
 	import '../app.css';
 	import { getSettings } from 'svelte-ux';
 
 	const { currentTheme } = getSettings();
-  currentTheme.setTheme("light")
+	currentTheme.setTheme('light');
 
 	export let data;
 	settings({
@@ -47,10 +47,27 @@
 			<!-- /> -->
 		</nav>
 
-		<AppBar title="Papujki"></AppBar>
+		<AppBar title="Papujki">
+			<div slot="title" class="flex">
+					<a href="/" class="icon">
+          H
+          </a>
+					<a href="/weather" class="icon">
+          W
+          </a>
+			</div>
+		</AppBar>
 
 		<slot />
 	</AppLayout>
 {:else}
 	<slot />
 {/if}
+
+<style>
+  .icon {
+    font-size: 1.5rem;
+    margin: 0 0.5rem;
+    font-weight: bold;
+  }
+</style>

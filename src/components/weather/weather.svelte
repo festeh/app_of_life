@@ -1,7 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
 	import { Card } from 'svelte-ux';
-	import { ListItem } from 'svelte-ux';
 	import WeatherHour from './weather_hour.svelte';
 
 	let hourlyData = null;
@@ -17,7 +16,6 @@
 				throw new Error(message);
 			}
 			hourlyData = await response.json();
-			console.log(hourlyData);
 			loading = false;
 		} catch (err) {
 			error = err.message;

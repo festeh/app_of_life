@@ -1,3 +1,5 @@
+import { formatTime } from "$lib";
+
 const apiKey = import.meta.env.VITE_TOMORROW_API_KEY;
 const latitude = 52.52;
 const longitude = 13.405;
@@ -36,12 +38,54 @@ function getWeatherDescription(weatherCode: number): string {
   return weatherDescriptions[weatherCode] || 'Неразбериха';
 }
 
+function getEmojiDescription(weatherCode): string {
+  const weatherEmojis = {
+    1000: '🥱',
+    1001: '☁️',
+    1100: '🌤',
+    1101: '🌥',
+    1102: '☁️',
+    2000: '🌫',
+    2100: '🌁',
+    3000: '💨',
+    3001: '🌬',
+    3002: '🌪',
+    4000: '🌧',
+    4001: '🌦',
+    4200: '🌧',
+    4201: '⛈',
+    5000: '🌨',
+    5001: '🌨',
+    5100: '🌨',
+    5101: '🌨',
+    6000: '🌧',
+    6001: '🌧',
+    6200: '🌧',
+    6201: '🌧',
+    7000: '🌧',
+    7101: '🌧',
+    7102: '🌧',
+    8000: '🌩',
+  };
+  return weatherEmojis[weatherCode] || '🤷';
+}
+
 const mockData = [
-  { time: "2024-06-08T18:00:00Z", temperature: 20, description: 'фейк данные', humidity: 50 },
-  { time: "2024-06-08T19:00:00Z", temperature: 19, description: 'Облачкааа', humidity: 55 },
-  { time: "2024-06-08T20:00:00Z", temperature: 18, description: 'Ясненько (ну почти)', humidity: 60 },
-  { time: "2024-06-08T21:00:00Z", temperature: 17, description: 'Янооблачка', humidity: 65 },
+  { time: "2024-06-08T18:00:00Z", values: { temperature: 20.5, humidity: 50, weatherCode: 1000 } },
+  { time: "2024-06-08T19:00:00Z", values: { temperature: 19.5, humidity: 55, weatherCode: 1100 } },
+  { time: "2024-06-08T20:00:00Z", values: { temperature: 18.5, humidity: 60, weatherCode: 2000 } },
+
 ]
+
+function processWeatherData(info) {
+  const time = formatTime(info.time);
+  const temperature = Math.round(info.values.temperature) + '°C';
+  const humidity = Math.round(info.values.humidity) + '%';
+  const weatherCode = info.values.weatherCode;
+  const description = getWeatherDescription(weatherCode);
+  const emoji = getEmojiDescription(weatherCode);
+  return { time, temperature, description: description, humidity, emoji };
+}
 
 export async function GET() {
   if (!apiKey) {
@@ -50,7 +94,7 @@ export async function GET() {
   }
   try {
     if (import.meta.env.VITE_USE_MOCK_DATA) {
-      return new Response(JSON.stringify(mockData), { status: 200 });
+      return new Response(JSON.stringify(mockData.map(processWeatherData)), { status: 200 });
     }
     const apiUrl = `https://api.tomorrow.io/v4/weather/forecast`
       + `?location=${latitude},${longitude}`
@@ -62,19 +106,10 @@ export async function GET() {
       console.error('Rate limit exceeded');
       return new Response(JSON.stringify(mockData), { status: 200 });
     }
-    console.log(data);
-    let hourlyData = data.timelines.hourly.map(info => {
-      const time = info.time;
-      const temperature = Math.round(info.values.temperature);
-      const humidity = Math.round(info.values.humidity);
-      const weatherCode = info.values.weatherCode;
-      const description = getWeatherDescription(weatherCode);
-      return { time, temperature, description: description, humidity };
-    })
-    // filter data that is not today
+    // filter data that is not today, convert current time to UTC time
     const today = new Date().toISOString().slice(0, 10);
-    // TODO: filter before, than map?
-    hourlyData = hourlyData.filter(info => info.time.startsWith(today));
+    let hourlyData = data.timelines.hourly.filter(info => info.time.startsWith(today));
+    hourlyData = hourlyData.map(processWeatherData)
 
     return new Response(JSON.stringify(hourlyData), {
       status: 200,
