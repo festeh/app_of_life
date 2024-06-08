@@ -3,7 +3,15 @@
 	import Weather from '../components/weather/weather.svelte';
 </script>
 
-<div class="grid sm:grid-cols-1 md:grid-cols-2">
+<div class="agrid">
 	<Weather isBig={false} />
 	<Bvg isBig={false} />
 </div>
+
+<style>
+.agrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1em;
+}
+</style>
