@@ -5,6 +5,12 @@ const svelte_ux = require('svelte-ux/plugins/tailwind.cjs');
 const config = {
   content: ['./src/**/*.{html,svelte}', './node_modules/svelte-ux/**/*.{svelte,js}'],
   theme: {
+    screens: {
+      sm: '400px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px'
+    },
     "light": {
       "color-scheme": "light",
       "primary": "hsl(257.4075 100% 50%)",

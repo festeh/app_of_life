@@ -3,7 +3,7 @@
 	import Weatherwidget from '../components/weather/weatherwidget.svelte';
 </script>
 
-<div class="grid md:grid-cols-2 sm:grid-cols-1">
+<div class="grid sm:grid-cols-1 md:grid-cols-2">
 	<Weatherwidget />
 	<Bvg isBig={false} />
 </div>
