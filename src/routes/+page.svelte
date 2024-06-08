@@ -1,5 +1,9 @@
 <script lang="ts">
-import Weatherwidget from '../components/weather/weatherwidget.svelte';
+	import Bvg from '../components/bvg/Bvg.svelte';
+	import Weatherwidget from '../components/weather/weatherwidget.svelte';
 </script>
 
-<Weatherwidget />
+<div class="grid grid-cols-2">
+	<Weatherwidget />
+	<Bvg isBig={false} />
+</div>

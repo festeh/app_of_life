@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { AppBar, AppLayout, Card, Button, NavItem, Tooltip, settings, Icon } from 'svelte-ux';
-
-	import { page } from '$app/stores';
+	import { AppBar, settings } from 'svelte-ux';
 	import '../app.css';
 	import { getSettings } from 'svelte-ux';
 
@@ -32,7 +30,8 @@
 	<AppBar title="Papujki" menuIcon={null}>
 		<div slot="title" class="flex">
 			<a href="/" class="icon"> H </a>
-			<a href="/weather" class="icon"> W </a>
+			<a data-sveltekit-reload href="/weather" class="icon"> W </a>
+      <a data-sveltekit-reload href="/bvg" class="icon"> B </a>
 		</div>
 	</AppBar>
 
