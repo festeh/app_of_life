@@ -38,9 +38,9 @@ function getWeatherDescription(weatherCode: number): string {
   return weatherDescriptions[weatherCode] || 'Неразбериха';
 }
 
-function getEmojiDescription(weatherCode): string {
+function getEmojiDescription(weatherCode, isLate: boolean): string {
   const weatherEmojis = {
-    1000: '🥱',
+    1000: '☀️',
     1001: '☁️',
     1100: '🌤',
     1101: '🌥',
@@ -67,14 +67,41 @@ function getEmojiDescription(weatherCode): string {
     7102: '🌧',
     8000: '🌩',
   };
+  if (weatherCode === 1000 && isLate) {
+    return '🌚';
+  }
   return weatherEmojis[weatherCode] || '🤷';
 }
 
 const mockData = [
-  { time: "2024-06-08T18:00:00Z", values: { temperature: 20.5, humidity: 50, weatherCode: 1000 } },
-  { time: "2024-06-08T19:00:00Z", values: { temperature: 19.5, humidity: 55, weatherCode: 1100 } },
-  { time: "2024-06-08T20:00:00Z", values: { temperature: 18.5, humidity: 60, weatherCode: 2000 } },
-
+  {
+    time: "2024-06-08T18:00:00Z",
+    values: {
+      temperature: 20.5, humidity: 50, weatherCode: 1000,
+      precipitationProbability: 0, uvIndex: 0, uvIndexHealthConcern: 0
+    }
+  },
+  {
+    time: "2024-06-08T19:00:00Z",
+    values: {
+      temperature: 19.5, humidity: 55, weatherCode: 1100,
+      precipitationProbability: 0, uvIndex: 0, uvIndexHealthConcern: 0
+    }
+  },
+  {
+    time: "2024-06-08T20:00:00Z",
+    values: {
+      temperature: 18.5, humidity: 60, weatherCode: 4000,
+      precipitationProbability: 50, uvIndex: 3, uvIndexHealthConcern: 1
+    }
+  },
+  {
+    time: "2024-06-08T21:00:00Z",
+    values: {
+      temperature: 17.5, humidity: 65, weatherCode: 4201,
+      precipitationProbability: 90, uvIndex: 0, uvIndexHealthConcern: 0
+    }
+  },
 ]
 
 function processWeatherData(info) {
@@ -83,8 +110,14 @@ function processWeatherData(info) {
   const humidity = Math.round(info.values.humidity) + '%';
   const weatherCode = info.values.weatherCode;
   const description = getWeatherDescription(weatherCode);
-  const emoji = getEmojiDescription(weatherCode);
-  return { time, temperature, description: description, humidity, emoji };
+  const precipitation = info.values.precipitationProbability;
+  const uvIndex = info.values?.uvIndex || 0;
+  const uvHealthConcern = info.values?.uvHealthConcern || 0;
+  const isLate = new Date(info.time).getHours() >= 20;
+  const windSpeed = info.values.windSpeed;
+  const emoji = getEmojiDescription(weatherCode, isLate);
+  const isWarning = uvIndex >= 3 || precipitation >= 50 || windSpeed >= 10 ? "🚩" : ""
+  return { time, temperature, description, humidity, emoji, isWarning, uvIndex, uvHealthConcern, precipitation, windSpeed };
 }
 
 export async function GET() {

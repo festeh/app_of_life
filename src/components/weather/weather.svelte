@@ -2,6 +2,9 @@
 	import { onMount } from 'svelte';
 	import { Card } from 'svelte-ux';
 	import WeatherHour from './weather_hour.svelte';
+	import Weatherwidget from './weatherwidget.svelte';
+
+	export let isBig = true;
 
 	let hourlyData = null;
 	let loading = true;
@@ -24,19 +27,18 @@
 	});
 </script>
 
-<Card title="Погодка" class="border rounded-xl p-2 m-1">
-	<div slot="contents">
-		{#if loading}
-			<p>Loading weather data...</p>
-		{:else if error}
-			<p>Error: {error}</p>
-		{:else}
+{#if loading}
+	<p>Loading weather data...</p>
+{:else if error}
+	<p>Error: {error}</p>
+{:else if isBig}
+	<Card title="Погодка" class="border rounded-xl p-2 m-1">
+		<div slot="contents">
 			{#each hourlyData as info}
 				<WeatherHour {info} />
 			{/each}
-		{/if}
-	</div>
-</Card>
-
-<style>
-</style>
+		</div>
+	</Card>
+{:else}
+	<Weatherwidget data={hourlyData} />
+{/if}
