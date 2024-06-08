@@ -8,7 +8,7 @@
 	<Table
 		{data}
 		classes={{
-			table: 'w-full m-2 border rounded-2xl p-1',
+			table: 'w-full m-2 border rounded-xl p-1',
 			thead: 'border',
 			th: 'p-2 border-y',
 			// tbody: 'bg-surface-200',
@@ -20,7 +20,7 @@
 			{ name: '🌡️', value: 'temperature', align: 'center' },
 			{ name: '💧', value: 'humidity', align: 'center' },
 			{ name: '🌐', value: 'emoji' },
-			{ name: '⚠️', value: 'isWarning' }
+			{ name: '⚠️', value: 'warning' }
 		]}
 	/>
 </div>

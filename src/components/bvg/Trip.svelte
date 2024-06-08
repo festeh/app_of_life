@@ -6,24 +6,19 @@
 	data = Object.fromEntries(Object.entries(data).filter(([_, v]) => v != null));
 
 	// extract time from ISO string in HH:MM format
-	function extractTime(time, onlyMin: boolean) {
-		const now = new Date();
+	function extractTime(time) {
 		const inputTime = new Date(time);
 		const diffInSeconds = Math.floor((inputTime.getTime() - now.getTime()) / 1000);
-		console.log(diffInSeconds);
 		if (diffInSeconds < 0) {
 			return '---';
 		}
-		const minutes = Math.floor(diffInSeconds / 60);
-    if (onlyMin) {
-      return `+ ${minutes.toString()}`
-    }
-		const seconds = diffInSeconds % 60;
-		return `+${minutes.toString()}:${seconds.toString().padStart(2, '0')}`;
+		const minutes = Math.round(diffInSeconds / 60);
+		return `+${minutes.toString()}`;
 	}
 
-	const when = extractTime(data.when, false);
-	const plannedWhen = extractTime(data.plannedWhen, true);
+	const now = new Date();
+	const when = extractTime(data.when);
+	const plannedWhen = extractTime(data.plannedWhen);
 	const bus = data?.busId?.toUpperCase() || 'WTF';
 </script>
 

@@ -114,10 +114,16 @@ function processWeatherData(info) {
   const uvIndex = info.values?.uvIndex || 0;
   const uvHealthConcern = info.values?.uvHealthConcern || 0;
   const isLate = new Date(info.time).getHours() >= 20;
-  const windSpeed = info.values.windSpeed;
+  const windSpeed = info.values.windSpeed || 0;
   const emoji = getEmojiDescription(weatherCode, isLate);
-  const isWarning = uvIndex >= 3 || precipitation >= 50 || windSpeed >= 10 ? "🚩" : ""
-  return { time, temperature, description, humidity, emoji, isWarning, uvIndex, uvHealthConcern, precipitation, windSpeed };
+  let warning = '';
+  if (info.values.precipitationProbability > 50) {
+    warning += '💦'
+  }
+  if (info.values.uvIndex >= 3) {
+    warning += '🔥'
+  }
+  return { time, temperature, description, humidity, emoji, warning, uvIndex, uvHealthConcern, precipitation, windSpeed };
 }
 
 export async function GET() {

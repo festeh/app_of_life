@@ -1,8 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
-	import { Card } from 'svelte-ux';
-	import WeatherHour from './weather_hour.svelte';
 	import Weatherwidget from './weatherwidget.svelte';
+	import WeatherPage from './WeatherPage.svelte';
 
 	export let isBig = true;
 
@@ -32,13 +31,7 @@
 {:else if error}
 	<p>Error: {error}</p>
 {:else if isBig}
-	<Card title="Погодка" class="border rounded-xl p-2 m-1">
-		<div slot="contents">
-			{#each hourlyData as info}
-				<WeatherHour {info} />
-			{/each}
-		</div>
-	</Card>
+  <WeatherPage data={hourlyData} />
 {:else}
 	<Weatherwidget data={hourlyData} />
 {/if}
