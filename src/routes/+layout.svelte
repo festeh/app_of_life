@@ -29,9 +29,10 @@
 {#if data.loggedIn}
 	<AppBar title="Papujki" menuIcon={null}>
 		<div slot="title" class="flex">
-			<a href="/" class="icon"> H </a>
+			<a href="/" class="icon"> M </a>
 			<a data-sveltekit-reload href="/weather" class="icon"> W </a>
       <a data-sveltekit-reload href="/bvg" class="icon"> B </a>
+      <a data-sveltekit-reload href="/habits" class="icon"> H </a>
 		</div>
 	</AppBar>
 
