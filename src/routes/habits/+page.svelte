@@ -1,3 +1,0 @@
-sc
-
-Habits page!

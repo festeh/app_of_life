@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Bvg from '../components/bvg/Bvg.svelte';
-	import Weather from '../components/weather/weather.svelte';
+	import Bvg from '../../components/bvg/Bvg.svelte';
+	import Weather from '../../components/weather/weather.svelte';
 </script>
 
 <div class="agrid">
