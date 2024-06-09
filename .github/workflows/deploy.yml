@@ -23,7 +23,7 @@ jobs:
         VITE_TOMORROW_API_KEY: ${{ secrets.VITE_TOMORROW_API_KEY }}
         VITE_POCKETBASE_URL: ${{ secrets.VITE_POCKETBASE_URL }}
         VITE_POCKETBASE_PASSWORD: ${{ secrets.VITE_POCKETBASE_PASSWORD }}
-        SECRET: ${{ secrets.SECRET }}
+        VITE_SECRET: ${{ secrets.VITE_SECRET }}
 
     - name: Copy to VPS
       uses: appleboy/scp-action@master
