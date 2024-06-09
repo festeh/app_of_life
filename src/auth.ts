@@ -1,5 +1,3 @@
-
-import { env } from '$env/dynamic/private';
 import { SvelteKitAuth } from "@auth/sveltekit"
 import Credentials from "@auth/sveltekit/providers/credentials"
 export const { handle, signIn, signOut } = SvelteKitAuth({
@@ -10,13 +8,13 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
     },
     authorize: async (credentials) => {
       console.log("AUTH", credentials)
-      if (credentials.email === env.VITE_EMAIL && credentials.password === env.VITE_PASSWORD) {
+      if (credentials.email === import.meta.env.VITE_EMAIL && credentials.password === import.meta.env.VITE_PASSWORD) {
         return { user: { email: credentials.email } }
       }
       throw new Error("Invalid credentials")
     }
   },
   )],
-  secret: env.SECRET,
+  secret: import.meta.env.VITE_SECRET,
   trustHost: true,
 })
