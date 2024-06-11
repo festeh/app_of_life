@@ -6,6 +6,6 @@ export const load = async (event) => {
   if (path === '/favicon.ico') return {};
   const session = await event.locals.auth();
   console.log('session', session);
-  if (!session?.user) throw redirect(303, '/auth/signin');
+  if (!session?.user) throw redirect(303, '/signin');
   return {};
 };

@@ -1,5 +1,12 @@
-import { SvelteKitAuth } from "@auth/sveltekit"
+import { AuthError, CredentialsSignin, SvelteKitAuth } from "@auth/sveltekit"
 import Credentials from "@auth/sveltekit/providers/credentials"
+import { redirect } from "@sveltejs/kit"
+
+class CustomError extends CredentialsSignin {
+  code = "401"
+}
+
+
 export const { handle, signIn, signOut } = SvelteKitAuth({
   providers: [Credentials({
     credentials: {
@@ -7,11 +14,10 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
       password: {},
     },
     authorize: async (credentials) => {
-      console.log("AUTH", credentials)
       if (credentials.email === import.meta.env.VITE_EMAIL && credentials.password === import.meta.env.VITE_PASSWORD) {
         return { user: { email: credentials.email } }
       }
-      throw new Error("Invalid credentials")
+      return null
     }
   },
   )],
