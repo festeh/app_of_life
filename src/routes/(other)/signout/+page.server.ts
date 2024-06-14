@@ -8,7 +8,7 @@ export const actions: Actions = {
     if (!session) {
       throw redirect(302, '/signin');
     }
-    await auth.invalidateSession(locals.session.id); // invalidate session
+    await auth.invalidateSession(locals.session.id);
     const sessionCookie = auth.createBlankSessionCookie();
     cookies.set(sessionCookie.name, sessionCookie.value, {
       path: "/",
