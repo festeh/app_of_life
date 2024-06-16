@@ -1,17 +1,9 @@
 import dotenv from 'dotenv';
-import PocketBase from 'pocketbase';
 
+import {auth} from './auth';
 dotenv.config();
 
-const db_url: string = process.env.VITE_POCKETBASE_URL!;
-const db_email = process.env.VITE_EMAIL!;
-const db_password = process.env.VITE_POCKETBASE_PASSWORD!;
-
-const pb = new PocketBase(db_url)
-const authData = await pb.admins.authWithPassword(
-  db_email,
-  db_password
-);
+const pb = await auth();
 
 // check if collection habits exists
 let habitCollection = null;
@@ -33,6 +25,8 @@ if (habitCollection !== null) {
 
 const oldSchema = [
   { name: 'description', type: 'text', required: true },
+  { name: 'long_description', type: 'editor', required: true },
+  { name: 'repeats_per_day', type: 'number', default: 1 },
 ];
 
 const col = await pb.collections.create({

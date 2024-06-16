@@ -23,6 +23,8 @@ const schema = [
   { name: 'habit', type: 'relation', options: { collectionId: habitsId, maxSelect: 1 } },
   { name: 'date', type: 'date', required: true },
   { name: 'result', type: 'select', options: { values: ['plus', 'minus', 'zero'], maxSelect: 1 } },
+  { name: 'streak', type: 'number', default: 0},
+  { name: 'repeats', type: 'number', default: 1 },
 ];
 
 await db_create(pb, 'habits_logs', schema);
