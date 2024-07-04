@@ -1,5 +1,16 @@
+import { DB_URL, get_db } from "$lib/db";
 import { auth } from "./auth";
 import { redirect, type Handle } from "@sveltejs/kit";
+import PocketBase from 'pocketbase';
+
+
+function eraseCookie(event) {
+  const blankCookie = auth.createBlankSessionCookie();
+  event.cookies.set(blankCookie.name, blankCookie.value, {
+    path: '/',
+    ...blankCookie.attributes
+  });
+}
 
 export const handle: Handle = async ({ event, resolve }) => {
   const sessionId = event.cookies.get(auth.sessionCookieName);
@@ -14,11 +25,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     });
   }
   if (!session) {
-    const sessionCookie = auth.createBlankSessionCookie();
-    event.cookies.set(sessionCookie.name, sessionCookie.value, {
-      path: '/',
-      ...sessionCookie.attributes
-    });
+    eraseCookie(event);
   }
 
   event.locals.user = user;
@@ -26,6 +33,22 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (event.route.id?.startsWith('/(app)')) {
     if (!user) redirect(301, '/signin');
   }
+  const db = get_db();
+  const db_cookie = event.cookies.get('pb_auth');
+  let dbLoaded = false;
+  if (db_cookie) {
+    db.authStore.loadFromCookie(db_cookie);
+  }
+  if (db.authStore.isValid) {
+    dbLoaded = true;
+  }
+  if (!dbLoaded) {
+    eraseCookie(event);
+    redirect(301, '/signin');
+  }
+
+  event.locals.db = db;
+
   const response = await resolve(event);
   return response;
 };
