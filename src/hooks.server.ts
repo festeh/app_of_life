@@ -42,8 +42,9 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (db.authStore.isValid) {
     dbLoaded = true;
   }
-  if (!dbLoaded) {
+  if (!dbLoaded && event.route.id?.startsWith('/(app)')) {
     eraseCookie(event);
+    console.log('redirecting to signin');
     redirect(301, '/signin');
   }
 
