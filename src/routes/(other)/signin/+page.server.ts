@@ -1,7 +1,7 @@
 import { auth } from "../../../auth";
 import { redirect } from "@sveltejs/kit";
 import type { Action, Actions } from "./$types"
-import { auth_db, get_db } from "$lib/db";
+import { authDB, getDB } from "$lib/db";
 
 const login: Action = async ({ request, cookies }) => {
   const data = await request.formData();
@@ -11,7 +11,7 @@ const login: Action = async ({ request, cookies }) => {
     console.log("Invalid email or password")
     return redirect(301, '/signin');
   }
-  const key = email;
+  const key = email!;
   const session = await auth.createSession(
     key, {}
   );
@@ -20,8 +20,8 @@ const login: Action = async ({ request, cookies }) => {
     path: "/",
     ...sessionCookie.attributes
   });
-  const db = get_db();
-  auth_db(db);
+  const db = getDB();
+  const authRes = await authDB(db);
   const token = db.authStore.token;
   cookies.set('pb_auth', JSON.stringify({ token }), {
     path: '/',

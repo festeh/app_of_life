@@ -1,7 +1,6 @@
-import { DB_URL, get_db } from "$lib/db";
+import { getDB } from "$lib/db";
 import { auth } from "./auth";
 import { redirect, type Handle } from "@sveltejs/kit";
-import PocketBase from 'pocketbase';
 
 
 function eraseCookie(event) {
@@ -33,18 +32,18 @@ export const handle: Handle = async ({ event, resolve }) => {
   if (event.route.id?.startsWith('/(app)')) {
     if (!user) redirect(301, '/signin');
   }
-  const db = get_db();
+  const db = getDB();
   const db_cookie = event.cookies.get('pb_auth');
+  const parsed = JSON.parse(db_cookie || '{"token":""}');
   let dbLoaded = false;
   if (db_cookie) {
-    db.authStore.loadFromCookie(db_cookie);
+    db.authStore.save(parsed.token);
   }
   if (db.authStore.isValid) {
     dbLoaded = true;
   }
   if (!dbLoaded && event.route.id?.startsWith('/(app)')) {
     eraseCookie(event);
-    console.log('redirecting to signin');
     redirect(301, '/signin');
   }
 
