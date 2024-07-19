@@ -29,11 +29,16 @@ export const handle: Handle = async ({ event, resolve }) => {
 
   event.locals.user = user;
   event.locals.session = session;
+  console.log("Running hook");
+  console.log("User", user);
+  console.log("Session", session);
+  console.log("Route", event.route.id);
   if (event.route.id?.startsWith('/(app)')) {
     if (!user) redirect(301, '/signin');
   }
   const db = getDB();
   const db_cookie = event.cookies.get('pb_auth');
+  console.log("DB cookie", db_cookie);
   const parsed = JSON.parse(db_cookie || '{"token":""}');
   let dbLoaded = false;
   if (db_cookie) {
@@ -43,7 +48,8 @@ export const handle: Handle = async ({ event, resolve }) => {
     dbLoaded = true;
   }
   if (!dbLoaded && event.route.id?.startsWith('/(app)')) {
-    eraseCookie(event);
+    console.log("DB not loaded");
+    // eraseCookie(event);
     redirect(301, '/signin');
   }
 
