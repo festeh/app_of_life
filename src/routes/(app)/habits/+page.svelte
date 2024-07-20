@@ -5,4 +5,4 @@
 
 </script>
 
-<Habits habits={data.habits} />
+<Habits habits={data.habits} logs={data.logs} />
