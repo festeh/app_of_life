@@ -29,7 +29,7 @@
 		<a href="/" class="icon"> M </a>
 		<a data-sveltekit-reload href="/weather" class="icon"> W </a>
 		<a data-sveltekit-reload href="/bvg" class="icon"> B </a>
-		<a data-sveltekit-reload href="/habits" class="icon"> H </a>
+		<a data-sveltekit-reload href="/habits?_={Date.now()}" class="icon"> H </a>
 	</div>
 </AppBar>
 
