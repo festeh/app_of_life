@@ -10,7 +10,6 @@
 	onMount(async () => {
 		const response = await fetch('/api/bvg');
 		const json = await response.json();
-		console.log(json);
 		data = json;
 	});
 </script>
