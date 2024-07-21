@@ -8,7 +8,7 @@ export const load = (async ({ locals }) => {
   last_week_date.setDate(last_week_date.getDate() - 7);
   last_week_date.setHours(0, 0, 0, 0);
   const last_week_date_formatted = last_week_date.toISOString().replace('T', ' ').substring(0, 19);
-  const filter = `created > "${last_week_date_formatted}"`;
+  const filter = `date >= "${last_week_date_formatted}"`;
   console.log(filter);
   const logs_last_week = await habits_logs.getFullList({
     filter

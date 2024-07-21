@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { Popover } from 'svelte-ux';
 
 	interface Habit {
@@ -11,8 +12,22 @@
 		key: string;
 		repr: string;
 	}
+
 	export let habits: Habit[];
 	export let logs: any[];
+	let completed: Record<string, Record<string, boolean>> = {};
+	let popupOpen: Record<string, boolean> = {};
+
+	onMount(async () => {
+		habits.forEach((habit) => {
+			popupOpen[habit.id] = false;
+			completed[habit.id] = {};
+		});
+		logs.forEach((log) => {
+			const isoDate = log.date.substring(0, 10);
+			completed[log.habit][isoDate] = true;
+		});
+	});
 
 	const today = new Date();
 	const dates: Date[] = [];
@@ -27,21 +42,10 @@
 		dates.push({ repr, key: today.toISOString().substring(0, 10) });
 	}
 
-	let completed: Record<string, Record<string, boolean>> = {};
-	logs.forEach((log) => {
-		const isoDate = log.created.substring(0, 10);
-		if (!completed[log.habit]) {
-			completed[log.habit] = {};
-		}
-		completed[log.habit][isoDate] = true;
-	});
-
-	let popupOpen: Record<string, boolean> = {};
-	habits.forEach((habit) => {
-		popupOpen[habit.id] = false;
-	});
-
-	async function completeHabit(habit: Habit) {
+	async function completeHabit(habit: Habit, date: Date) {
+    if (completed[habit.id] && completed[habit.id][date.key]) {
+      return;
+    }
 		const res = await fetch('/api/habits', {
 			method: 'POST',
 			headers: {
@@ -49,10 +53,13 @@
 			},
 			body: JSON.stringify({
 				habit: habit.id,
+        date: date.key,
 				repeats: 1,
 				streak: 1
 			})
 		});
+		// invalidateAll();
+		window.location.reload();
 	}
 </script>
 
@@ -77,18 +84,16 @@
 				{habit.description}
 			</div>
 			{#each dates as date}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
-				<div
+				<button
 					class="text-center items-center justify-center flex"
-					on:click={() => completeHabit(habit)}
+					on:click={() => completeHabit(habit, date)}
 				>
 					<span
 						class="inline-block w-6 h-6 rounded-full"
-						class:bg-green-500={completed[habit.id][date.key] === true}
-						class:bg-red-500={!completed[habit.id][date.key]}
+						class:bg-green-500={completed[habit.id] && completed[habit.id][date.key] === true}
+						class:bg-red-500={!completed[habit.id] || !completed[habit.id][date.key]}
 					></span>
-				</div>
+				</button>
 			{/each}
 		{/each}
 		<div class="text-center"></div>

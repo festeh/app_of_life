@@ -21,6 +21,7 @@ if (habitsLogsExists) {
 const habitsId = (await pb.collections.getOne('habits')).id;
 const schema = [
   { name: 'habit', type: 'relation', options: { collectionId: habitsId, maxSelect: 1 } },
+  { name: 'date', type: 'date'},
   { name: 'streak', type: 'number', default: 0},
   { name: 'repeats', type: 'number', default: 1 },
 ];

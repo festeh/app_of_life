@@ -8,6 +8,7 @@ export async function POST({ locals, request }) {
   const body = await request.json();
   habits_logs.create({
     habit: body.habit,
+    date: body.date,
     streak: body.streak,
     repeats: body.repeats,
   });
